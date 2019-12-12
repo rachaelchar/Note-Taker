@@ -3,9 +3,23 @@ const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 3000;
 
-APP.use(EXPRESS.urlencoded({ extended: true }));
-APP.use(EXPRESS.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}.`)
+});
+
+
+
+// ========== HTML ROUTES ==========
+
+// return notes.html page
+app.get("/", function(req, res){
+	res.sendFile(PATH.join(__dirname, "./home.html"));
+});
+
+// (catch all) return index.html
+app.get("*", function(req, res){
+	res.sendFile(PATH.join(__dirname, "./home.html"));
 });
