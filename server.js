@@ -11,15 +11,14 @@ app.listen(PORT, () => {
 });
 
 
-
 // ========== HTML ROUTES ==========
 
 // return notes.html page
 app.get("/", function(req, res){
-	res.sendFile(PATH.join(__dirname, "./home.html"));
+	res.sendFile(path.join(__dirname, "Develop/public/index.html"));
 });
 
 // (catch all) return index.html
 app.get("*", function(req, res){
-	res.sendFile(PATH.join(__dirname, "./home.html"));
+	res.sendFile(path.join(__dirname, "Develop/public/index.html"));
 });
