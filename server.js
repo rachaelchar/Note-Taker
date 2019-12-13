@@ -10,6 +10,14 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'Develop/public')));
 
 
+
+// ========== API ROUTES ==========
+app.get("/api/notes", function(req, res){
+	res.sendFile(path.join(__dirname, './Develop/db/db.json'))
+});
+
+
+
 // ========== HTML ROUTES ==========
 
 // return notes.html page
@@ -25,10 +33,6 @@ app.get("/notes", function(req, res){
 app.get("*", function(req, res){
 	res.sendFile(path.join(__dirname, "Develop/public/index.html"));
 });
-
-
-// ========== API ROUTES ==========
-
 
 
 // ========== LISTEN ==========
