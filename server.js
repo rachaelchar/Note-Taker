@@ -9,16 +9,16 @@ app.use(express.json());
 // serve static files 
 app.use(express.static(path.join(__dirname, 'Develop/public')));
 
-app.listen(PORT, () => {
-    console.log(`Server is listening on ${PORT}.`)
-});
-
 
 // ========== HTML ROUTES ==========
 
 // return notes.html page
 app.get("/", function(req, res){
 	res.sendFile(path.join(__dirname, "Develop/public/index.html"));
+});
+
+app.get("/notes", function(req, res){
+	res.sendFile(path.join(__dirname, "Develop/public/notes.html"));
 });
 
 // (catch all) return index.html
@@ -28,3 +28,11 @@ app.get("*", function(req, res){
 
 
 // ========== API ROUTES ==========
+
+
+
+// ========== LISTEN ==========
+
+app.listen(PORT, () => {
+    console.log(`Server is listening on ${PORT}.`)
+}); 
