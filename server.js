@@ -3,13 +3,16 @@ const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 3000;
 const db = require("./db/db.json");
+const fs = require("fs");
+
+const id = Math.floor(Math.random() * 100);
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // serve static files 
 app.use(express.static(path.join(__dirname, './public')));
-
 
 
 // ========== API ROUTES ==========
@@ -19,9 +22,21 @@ app.get("/api/notes", function(req, res){
 });
 
 app.post("/api/notes", function(req, res){
-	console.log(req.body);
+	// console.log(req.body);
 	// res.send(path.join(__dirname, './Develop/db/db.json'))
-	res.json(req.body);
+	// res.json(req.body);
+	let addedNote = JSON.stringify(req.body);
+	addedNote = '{' + `"id":${id},` + addedNote.substr(1);
+	console.log(addedNote);
+
+	fs.appendFile('./db/db.json', addedNote, function (err) {
+		if (err) throw err;
+		console.log('Saved!');
+	  });
+
+	
+
+
 });
 
 
