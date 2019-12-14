@@ -22,19 +22,19 @@ app.get("/api/notes", function(req, res){
 });
 
 app.post("/api/notes", function(req, res){
-	// console.log(req.body);
-	// res.send(path.join(__dirname, './Develop/db/db.json'))
-	// res.json(req.body);
+
 	let addedNote = JSON.stringify(req.body);
 	addedNote = '{' + `"id":${id},` + addedNote.substr(1);
 	console.log(addedNote);
+
+	// potentially use readfile first?
+
+	// Try to start at 1 and automatically increment id -- must be unique
 
 	fs.appendFile('./db/db.json', addedNote, function (err) {
 		if (err) throw err;
 		console.log('Saved!');
 	  });
-
-	
 
 
 });
