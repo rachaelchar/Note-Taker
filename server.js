@@ -24,19 +24,49 @@ app.get("/api/notes", function (req, res) {
 app.post("/api/notes", function (req, res) {
 
 	let addedNote = JSON.stringify(req.body);
-	addedNote = '{' + `"id":${id++},` + addedNote.substr(1);
-	let addedNoteJSON = JSON.parse(addedNote);
-	console.log('addedNoteJSON', addedNoteJSON);
 
 	fs.readFile('./db/db.json', 'utf8', (err, data) => {
 		if (err) throw err;
+
 		let dataArray = JSON.parse(data);
+		let lastNoteId = dataArray[dataArray.length - 1].id;
+		console.log("last note id", lastNoteId);
+		let newId = lastNoteId + 1;
+		console.log("new ID", newId);
+
+
+		addedNote = '{' + `"id":${newId},` + addedNote.substr(1);
+		let addedNoteJSON = JSON.parse(addedNote);
+		console.log('addedNoteJSON', addedNoteJSON);
+		
+
 		console.log('dataArray', dataArray);
 		dataArray.push(addedNoteJSON);
 		console.log('updated dataArray', dataArray);
-		
+
 		let newDataString = JSON.stringify(dataArray);
 		console.log(newDataString);
+
+		fs.writeFile('./db/db.json', newDataString, function (err) {
+			if (err) throw err;
+			console.log('Saved!');
+		});
+	});
+});
+
+
+// DELETE A NOTE (NOT WORKING)
+app.put('api/edit/:id', function (req, res) {
+	const id = req.params.id;
+
+	fs.readFile('./db/db.json', 'utf8', (err, data) => {
+		let dataArray = JSON.parse(data);
+
+		dataArray = dataArray.filter(function (obj) {
+			return obj.id !== id;
+		});
+
+		let newDataString = JSON.stringify(dataArray);
 
 		fs.writeFile('./db/db.json', newDataString, function (err) {
 			if (err) throw err;
