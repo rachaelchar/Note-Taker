@@ -5,7 +5,8 @@ const PORT = process.env.PORT || 3000;
 const db = require("./db/db.json");
 const fs = require("fs");
 
-const id = Math.floor(Math.random() * 100);
+// const id = Math.floor(Math.random() * 100);
+let id = 1;
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -24,11 +25,9 @@ app.get("/api/notes", function (req, res) {
 app.post("/api/notes", function (req, res) {
 
 	let addedNote = JSON.stringify(req.body);
-	addedNote = '{' + `"id":${id},` + addedNote.substr(1);
+	addedNote = '{' + `"id":${id++},` + addedNote.substr(1);
 	let addedNoteJSON = JSON.parse(addedNote);
 	console.log('addedNoteJSON', addedNoteJSON);
-
-	// potentially use readfile first?
 
 	fs.readFile('./db/db.json', 'utf8', (err, data) => {
 		if (err) throw err;
@@ -45,13 +44,7 @@ app.post("/api/notes", function (req, res) {
 			console.log('Saved!');
 		});
 	});
-
-
-	// Try to start at 1 and automatically increment id -- must be unique
-
-
-
-})
+});
 
 
 // ========== HTML ROUTES ==========
