@@ -5,12 +5,10 @@ const PORT = process.env.PORT || 3000;
 const db = require("./db/db.json");
 const fs = require("fs");
 
-// const id = Math.floor(Math.random() * 100);
-let id = 1;
-
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+const id = 0;
 
 // serve static files 
 app.use(express.static(path.join(__dirname, './public')));
@@ -30,16 +28,19 @@ app.post("/api/notes", function (req, res) {
 
 		let dataArray = JSON.parse(data);
 		let lastNoteId = dataArray[dataArray.length - 1].id;
+
+		if (lastNoteId === undefined ){
+			lastNoteId = 0;
+		}
 		console.log("last note id", lastNoteId);
+
 		let newId = lastNoteId + 1;
 		console.log("new ID", newId);
-
 
 		addedNote = '{' + `"id":${newId},` + addedNote.substr(1);
 		let addedNoteJSON = JSON.parse(addedNote);
 		console.log('addedNoteJSON', addedNoteJSON);
 		
-
 		console.log('dataArray', dataArray);
 		dataArray.push(addedNoteJSON);
 		console.log('updated dataArray', dataArray);
