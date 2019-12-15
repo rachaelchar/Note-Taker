@@ -16,43 +16,57 @@ app.use(express.static(path.join(__dirname, './public')));
 
 
 // ========== API ROUTES ==========
-app.get("/api/notes", function(req, res){
+app.get("/api/notes", function (req, res) {
 	// res.send(path.join(__dirname, './Develop/db/db.json'))
 	res.json("It worked!");
 });
 
-app.post("/api/notes", function(req, res){
+app.post("/api/notes", function (req, res) {
 
 	let addedNote = JSON.stringify(req.body);
 	addedNote = '{' + `"id":${id},` + addedNote.substr(1);
-	console.log(addedNote);
+	let addedNoteJSON = JSON.parse(addedNote);
+	console.log('addedNoteJSON', addedNoteJSON);
 
 	// potentially use readfile first?
 
+	fs.readFile('./db/db.json', 'utf8', (err, data) => {
+		if (err) throw err;
+		let dataArray = JSON.parse(data);
+		console.log('dataArray', dataArray);
+		dataArray.push(addedNoteJSON);
+		console.log('updated dataArray', dataArray);
+		
+		let newDataString = JSON.stringify(dataArray);
+		console.log(newDataString);
+
+		fs.writeFile('./db/db.json', newDataString, function (err) {
+			if (err) throw err;
+			console.log('Saved!');
+		});
+	});
+
+
 	// Try to start at 1 and automatically increment id -- must be unique
 
-	fs.appendFile('./db/db.json', addedNote, function (err) {
-		if (err) throw err;
-		console.log('Saved!');
-	  });
 
 
-});
+})
 
 
 // ========== HTML ROUTES ==========
 
 // return notes.html page
-app.get("/", function(req, res){
+app.get("/", function (req, res) {
 	res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
-app.get("/notes", function(req, res){
+app.get("/notes", function (req, res) {
 	res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
 // (catch all) return index.html
-app.get("*", function(req, res){
+app.get("*", function (req, res) {
 	res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
@@ -60,5 +74,5 @@ app.get("*", function(req, res){
 // ========== LISTEN ========== 
 
 app.listen(PORT, () => {
-    console.log(`Server is listening on ${PORT}.`)
+	console.log(`Server is listening on ${PORT}.`)
 }); 
