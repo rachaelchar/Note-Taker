@@ -18,8 +18,7 @@ app.use(express.static(path.join(__dirname, './public')));
 
 // ========== API ROUTES ==========
 app.get("/api/notes", function (req, res) {
-	// res.send(path.join(__dirname, './Develop/db/db.json'))
-	res.json("It worked!");
+	res.sendFile(path.join(__dirname, './db/db.json'))
 });
 
 app.post("/api/notes", function (req, res) {
