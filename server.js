@@ -15,10 +15,13 @@ app.use(express.static(path.join(__dirname, './public')));
 
 
 // ========== API ROUTES ==========
+
+// showing notes
 app.get("/api/notes", function (req, res) {
 	res.sendFile(path.join(__dirname, './db/db.json'))
 });
 
+// adding a note
 app.post("/api/notes", function (req, res) {
 
 	let addedNote = JSON.stringify(req.body);
@@ -53,18 +56,22 @@ app.post("/api/notes", function (req, res) {
 			console.log('Saved!');
 		});
 	});
+
+	res.sendFile(path.join(__dirname, './db/db.json'));
 });
 
 
-// DELETE A NOTE (NOT WORKING)
-app.put('api/edit/:id', function (req, res) {
-	const id = req.params.id;
+// deleting a note (NOT WORKING)
 
+app.delete('/api/notes/:id', function (req, res) {
+	let deleteId = req.params.id;
+	console.log(req.params.id);
+	
 	fs.readFile('./db/db.json', 'utf8', (err, data) => {
 		let dataArray = JSON.parse(data);
 
-		dataArray = dataArray.filter(function (obj) {
-			return obj.id !== id;
+		dataArray = dataArray.filter(function (note) {
+			return note.id != deleteId;
 		});
 
 		let newDataString = JSON.stringify(dataArray);
@@ -74,21 +81,24 @@ app.put('api/edit/:id', function (req, res) {
 			console.log('Saved!');
 		});
 	});
+
+	res.sendFile(path.join(__dirname, './db/db.json'))
 });
 
 
 // ========== HTML ROUTES ==========
 
-// return notes.html page
+// get home page
 app.get("/", function (req, res) {
 	res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
+// get notes page
 app.get("/notes", function (req, res) {
 	res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
-// (catch all) return index.html
+// (catch all other urls) get home page
 app.get("*", function (req, res) {
 	res.sendFile(path.join(__dirname, "./public/index.html"));
 });
