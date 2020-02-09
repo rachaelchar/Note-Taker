@@ -60,9 +60,6 @@ app.post("/api/notes", function (req, res) {
 	res.sendFile(path.join(__dirname, './db/db.json'));
 });
 
-
-// deleting a note (NOT WORKING)
-
 app.delete('/api/notes/:id', function (req, res) {
 	let deleteId = req.params.id;
 	console.log(req.params.id);
